@@ -1,0 +1,16 @@
+default: &default
+  adapter: postgresql
+  pool: 5
+  timeout: 5000
+
+development:
+  <<: *default
+  database: gift_shuffler_development
+
+test:
+  <<: *default
+  database: gift_shuffler_test
+
+production:
+  <<: *default
+  database: gift_shuffler_production

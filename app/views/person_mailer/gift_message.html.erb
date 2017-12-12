@@ -1,0 +1,8 @@
+<h3>Hej, <%= @giver.name %></h3>
+<p>Robisz prezent dla: <%= @receiver.name %></p>
+<hr />
+<p><%= @receiver.name %> otrzyma prezentów: <%= @receiver.gifts_to_receive %></p>
+<p><%= @receiver.name %> robi prezentów: <%= @receiver.gifts_to_make %></p>
+<hr />
+<p>Ty otrzymasz prezentów: <%= @giver.gifts_to_receive %></p>
+<p>Ty robisz prezentów: <%= @giver.gifts_to_make %></p>
