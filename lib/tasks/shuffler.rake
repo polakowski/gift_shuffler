@@ -51,4 +51,11 @@ namespace :shuffler do
 
     puts 'Done!'
   end
+
+  desc 'Sends test email'
+  task test: :environment do
+    Person.all.each do |person|
+      PersonMailer.test_message(person)
+    end
+  end
 end

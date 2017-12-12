@@ -5,4 +5,9 @@ class PersonMailer < ApplicationMailer
 
     mail to: @giver.email, subject: 'Prezencik'
   end
+
+  def test_message(person)
+    @person = person
+    mail to: @person.email, subject: '-- Test --'
+  end
 end
