@@ -55,7 +55,7 @@ namespace :shuffler do
   desc 'Sends test email'
   task test: :environment do
     Person.all.each do |person|
-      PersonMailer.test_message(person)
+      PersonMailer.test_message(person).deliver_now
     end
   end
 end

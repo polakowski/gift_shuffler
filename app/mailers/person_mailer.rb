@@ -3,7 +3,7 @@ class PersonMailer < ApplicationMailer
     @giver = Person.find(giver_id)
     @receiver = Person.find(receiver_id)
 
-    mail to: @giver.email, subject: 'Prezencik'
+    mail to: @giver.email, subject: 'Kromka z masłem - prezenty'
   end
 
   def test_message(person)
