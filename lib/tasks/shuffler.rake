@@ -15,6 +15,7 @@ namespace :shuffler do
         candidate = Person.find(candidate_ids.sample)
         next if person.id == candidate.id
         next if person.group_id && person.group_id == candidate.group_id
+        next if person.last_year_receiver == candidate
         result[person.id] = candidate.id
         candidate_ids.delete(candidate.id)
         break
