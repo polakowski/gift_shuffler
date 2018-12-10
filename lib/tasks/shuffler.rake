@@ -4,10 +4,9 @@ namespace :shuffler do
     result = {}
     candidate_ids = Person.ids.shuffle
 
-    print 'Shuffle start'
+    puts 'Shuffle...'
 
     Person.all.shuffle.each do |person|
-      print ?.
       counter = 0
       loop do
         raise 'Something went wrong' if counter == 100
@@ -21,8 +20,6 @@ namespace :shuffler do
         break
       end
     end
-
-    puts ''
 
     if result.keys.sort != result.values.sort
       raise 'Invalid shuffle result! (1)'
@@ -58,5 +55,12 @@ namespace :shuffler do
     Person.all.each do |person|
       PersonMailer.test_message(person).deliver_now
     end
+  end
+
+  desc 'Resets user stats'
+  task reset: :environment do
+    print 'Reset users stats... '
+    Person.update_all(gifts_to_receive: 0, gifts_to_make: 0)
+    puts 'Done!'
   end
 end
