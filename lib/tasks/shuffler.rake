@@ -36,8 +36,13 @@ namespace :shuffler do
     Person.transaction do
       puts 'Setting counters...'
       result.each do |giver_id, receiver_id|
-        Person.find(giver_id).giver!
-        Person.find(receiver_id).receiver!
+        giver = Person.find(giver_id)
+        receiver = Person.find(receiver_id)
+
+        giver.giver!
+        receiver.receiver!
+
+        giver.last_year_receiver! receiver
       end
 
       puts 'Sending emails...'

@@ -12,10 +12,6 @@ class Person < ApplicationRecord
   end
 
   def last_year_receiver!(receiver)
-    if last_year_receiver_id
-      raise 'Ta osoba juz ma jednego odbiorce z zeszlego roku!'
-    end
-
-    update last_year_receiver_id: receiver.id
+    update! last_year_receiver_id: receiver.id
   end
 end
