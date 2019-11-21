@@ -1,6 +1,15 @@
 namespace :shuffler do
   desc "Shuffles people and sends emails"
   task go: :environment do
+    invalid_person = Person.all.find do |person|
+      person.gifts_to_make != 0 || person.gifts_to_receive != 0
+    end
+
+    if invalid_person.present?
+      raise 'Error! (0)'
+    end
+
+    emails = []
     result = {}
     candidate_ids = Person.ids.shuffle
 
@@ -9,7 +18,7 @@ namespace :shuffler do
     Person.all.shuffle.each do |person|
       counter = 0
       loop do
-        raise 'Something went wrong' if counter == 100
+        raise 'Something went wrong' if counter == 1000
         counter += 1
         candidate = Person.find(candidate_ids.sample)
         next if person.id == candidate.id
@@ -22,15 +31,15 @@ namespace :shuffler do
     end
 
     if result.keys.sort != result.values.sort
-      raise 'Invalid shuffle result! (1)'
+      raise 'Error! (1)'
     end
 
     if result.keys.count != result.keys.uniq.count
-      raise 'Invalid shuffle result! (2)'
+      raise 'Error! (2)'
     end
 
     if result.values.count != result.values.uniq.count
-      raise 'Invalid shuffle result! (3)'
+      raise 'Error! (3)'
     end
 
     Person.transaction do
@@ -47,12 +56,28 @@ namespace :shuffler do
 
       puts 'Sending emails...'
 
-      result.each do |giver_id, receiver_id|
-        PersonMailer.gift_message(giver_id, receiver_id).deliver_now
-      end
-    end
 
-    puts 'Done!'
+      result.each do |giver_id, receiver_id|
+        emails.push PersonMailer.gift_message(giver_id, receiver_id)
+      end
+
+      if emails.compact.count != Person.count
+        raise 'Error! (4)'
+      end
+
+      emails.each do |email|
+        puts '#################################'
+        puts '######### DELIVER EMAIL #########'
+        puts '#################################'
+        email.deliver_now
+      end
+
+      20.times do
+        puts 'Done!'
+      end
+
+      puts "#{result.values.count} people shuffled, #{emails.count} emails delivered."
+    end
   end
 
   desc 'Sends test email'
