@@ -56,7 +56,6 @@ namespace :shuffler do
 
       puts 'Sending emails...'
 
-
       result.each do |giver_id, receiver_id|
         emails.push PersonMailer.gift_message(giver_id, receiver_id)
       end
@@ -72,8 +71,12 @@ namespace :shuffler do
         email.deliver_now
       end
 
-      20.times do
+      100.times do
         puts 'Done!'
+      end
+
+      3.times do
+        puts "\n"
       end
 
       puts "#{result.values.count} people shuffled, #{emails.count} emails delivered."
